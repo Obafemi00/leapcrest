@@ -19,8 +19,8 @@ body {
 }
 
 body {
-  color: #ffffff;
-  background: linear-gradient(135deg, #051621 0%, #0A1929 50%, #0F2E42 100%);
+  color: #0B1F33;
+  background: #FFFFFF;
   min-height: 100vh;
 }
 
@@ -41,14 +41,14 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0A1929;
+  background: #F1F5F9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2EE6C5;
+  background: #CBD5E1;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #24C4A6;
+  background: #94A3B8;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 const stats = [
   {
@@ -21,54 +21,60 @@ const stats = [
 ];
 
 export default function TheProblem() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-background-dark/50">
-      <div className="container mx-auto max-w-6xl">
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
+    <section className="min-h-screen md:h-screen flex items-center py-20 md:py-0 px-6 lg:px-8 bg-background-light">
+      <div className="container mx-auto max-w-6xl w-full">
+        <motion.div
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-          className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 text-center"
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="space-y-12"
         >
-          The Problem
-        </motion.h2>
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold text-text-primary mb-6">
+              The Problem
+            </h2>
 
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-lg sm:text-xl text-gray-300 mb-12 text-center max-w-3xl mx-auto"
-        >
-          The employability gap continues to widen. Institutions produce
-          graduates with strong academic foundations, but industry demands
-          practical skills, contextual knowledge, and workplace readiness that
-          traditional curricula cannot fully address.
-        </motion.p>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-          {stats.map((stat, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
+            <motion.p
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 8 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              className="bg-background/60 backdrop-blur-sm border border-primary/20 rounded-lg p-8 hover:border-primary/40 transition-all"
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
+              className="text-lg text-text-secondary mb-16 leading-relaxed max-w-3xl"
             >
-              <div className="text-4xl sm:text-5xl font-extrabold text-primary mb-3">
-                {stat.number}
-              </div>
-              <div className="text-xl font-semibold text-white mb-2">
-                {stat.label}
-              </div>
-              <div className="text-gray-400 text-sm leading-relaxed">
-                {stat.description}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+              The employability gap continues to widen. Institutions produce
+              graduates with strong academic foundations, but industry demands
+              practical skills, contextual knowledge, and workplace readiness that
+              traditional curricula cannot fully address.
+            </motion.p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {stats.map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10, scale: shouldReduceMotion ? 1 : 0.98 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.4, ease: "easeOut", delay: index * 0.1 }}
+                className="border-t-2 border-primary pt-6"
+              >
+                <div className="text-3xl md:text-4xl font-bold text-text-primary mb-3">
+                  {stat.number}
+                </div>
+                <div className="text-lg font-semibold text-text-primary mb-2">
+                  {stat.label}
+                </div>
+                <div className="text-text-secondary text-sm leading-relaxed">
+                  {stat.description}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

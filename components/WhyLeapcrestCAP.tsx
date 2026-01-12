@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 const points = [
   {
@@ -26,45 +26,45 @@ const points = [
 ];
 
 export default function WhyLeapcrestCAP() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section
       id="why-cap"
-      className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
+      className="min-h-screen md:h-screen flex items-center py-20 md:py-0 px-6 lg:px-8 bg-background-light"
     >
-      <div className="container mx-auto max-w-6xl">
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
+      <div className="container mx-auto max-w-6xl w-full">
+        <motion.div
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-          className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-12 text-center"
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="space-y-12"
         >
-          Why Leapcrest CAP<sup>©</sup>?
-        </motion.h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-text-primary">
+            Why Leapcrest CAP<sup>©</sup>?
+          </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-          {points.map((point, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, delay: index * 0.15 }}
-              className="bg-background/60 backdrop-blur-sm border border-primary/20 rounded-lg p-6 hover:border-primary/40 transition-all"
-            >
-              <h3 className="text-xl font-bold text-primary mb-3">
-                {point.title}
-              </h3>
-              <p className="text-gray-300 leading-relaxed">
-                {point.description}
-              </p>
-            </motion.div>
-          ))}
-        </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl">
+            {points.map((point, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10, scale: shouldReduceMotion ? 1 : 0.98 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.4, ease: "easeOut", delay: index * 0.08 }}
+              >
+                <h3 className="text-xl font-semibold text-text-primary mb-3">
+                  {point.title}
+                </h3>
+                <p className="text-text-secondary leading-relaxed">
+                  {point.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
-
-      {/* Decorative gradient */}
-      <div className="absolute top-1/2 left-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl -z-10" />
     </section>
   );
 }

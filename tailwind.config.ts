@@ -10,17 +10,25 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#2EE6C5",
-          dark: "#24C4A6",
-          light: "#4FE9D1",
+          DEFAULT: "#1F9D8F",
         },
         background: {
-          DEFAULT: "#0A1929",
-          dark: "#051621",
+          DEFAULT: "#FFFFFF",
+          light: "#F7F9FC",
+        },
+        text: {
+          primary: "#0B1F33",
+          secondary: "#4B5563",
+        },
+        border: {
+          DEFAULT: "#E5E7EB",
         },
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+      },
+      maxWidth: {
+        content: "75ch",
       },
     },
   },
