@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -32,7 +33,24 @@ export default function Header() {
         className="container mx-auto px-6 lg:px-8 py-5"
         aria-label="Main navigation"
       >
-        <div className="flex items-center justify-end">
+        <div className="max-w-6xl w-full mx-auto flex items-center justify-between">
+          <button
+            onClick={() => scrollToSection("home")}
+            className="flex items-center"
+            aria-label="Go to home"
+          >
+            <div className="-ml-1">
+              <Image
+                src="/logos/LeapCrest White PNG-trimmed.png"
+                alt="Leapcrest"
+                width={240}
+                height={72}
+                className="h-16 md:h-20 lg:h-24 w-auto object-contain"
+                priority
+              />
+            </div>
+          </button>
+
           <div className="hidden md:flex items-center space-x-10">
             <button
               onClick={() => scrollToSection("home")}

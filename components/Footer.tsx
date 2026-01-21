@@ -26,7 +26,15 @@ export default function Footer() {
                   info@leapcrest.in
                 </a>
               </p>
-              <p>Phone: Coming soon</p>
+              <p>
+                <a
+                  href="tel:+919654765538"
+                  className="hover:text-primary transition-colors"
+                  aria-label="Phone Leapcrest"
+                >
+                  +91-965-476-5538
+                </a>
+              </p>
             </div>
           </div>
 

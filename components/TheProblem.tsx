@@ -1,27 +1,16 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useInView } from "framer-motion";
+import { useRef } from "react";
+import CinematicSpeedometer from "./CinematicSpeedometer";
 
-const stats = [
-  {
-    number: "85%",
-    label: "of graduates lack industry-ready skills",
-    description: "Majority of graduates enter the workforce unprepared",
-  },
-  {
-    number: "60%",
-    label: "employability gap in technical roles",
-    description: "Skills mismatch between education and industry needs",
-  },
-  {
-    number: "2.5 years",
-    label: "average time to become productive",
-    description: "Fresh graduates require extensive onboarding period",
-  },
-];
+// Deep blue from logo - matches text-primary #0B1F33
+const brandBlue = "#0B1F33";
 
 export default function TheProblem() {
   const shouldReduceMotion = useReducedMotion();
+  const lineRef = useRef<HTMLDivElement>(null);
+  const isLineInView = useInView(lineRef, { once: true, margin: "-100px" });
 
   return (
     <section className="min-h-screen md:h-screen flex items-center py-20 md:py-0 px-6 lg:px-8 bg-background-light">
@@ -30,11 +19,14 @@ export default function TheProblem() {
           initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
           className="space-y-12"
         >
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-text-primary mb-6">
+            <h2
+              className="text-3xl md:text-4xl font-bold mb-6"
+              style={{ color: brandBlue }}
+            >
               The Problem
             </h2>
 
@@ -42,37 +34,36 @@ export default function TheProblem() {
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 8 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
-              className="text-lg text-text-secondary mb-16 leading-relaxed max-w-3xl"
+              transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1], delay: 0.15 }}
+              className="text-lg text-text-secondary mb-12 leading-relaxed max-w-3xl"
             >
               The employability gap continues to widen. Institutions produce
               graduates with strong academic foundations, but industry demands
               practical skills, contextual knowledge, and workplace readiness that
               traditional curricula cannot fully address.
             </motion.p>
+
+            {/* Animated horizontal line */}
+            <div ref={lineRef} className="relative mb-16 h-px overflow-hidden">
+              <motion.div
+                className="h-full"
+                style={{
+                  backgroundColor: brandBlue,
+                  width: "100%",
+                }}
+                initial={{ x: "-100%" }}
+                animate={isLineInView ? { x: 0 } : { x: "-100%" }}
+                transition={{
+                  duration: shouldReduceMotion ? 0 : 1.2,
+                  ease: [0.4, 0, 0.2, 1],
+                }}
+              />
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10, scale: shouldReduceMotion ? 1 : 0.98 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.4, ease: "easeOut", delay: index * 0.1 }}
-                className="border-t-2 border-primary pt-6"
-              >
-                <div className="text-3xl md:text-4xl font-bold text-text-primary mb-3">
-                  {stat.number}
-                </div>
-                <div className="text-lg font-semibold text-text-primary mb-2">
-                  {stat.label}
-                </div>
-                <div className="text-text-secondary text-sm leading-relaxed">
-                  {stat.description}
-                </div>
-              </motion.div>
-            ))}
+          {/* Cinematic Speedometer */}
+          <div className="flex items-center justify-center w-full">
+            <CinematicSpeedometer finalValue={85} />
           </div>
         </motion.div>
       </div>

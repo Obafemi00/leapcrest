@@ -49,8 +49,7 @@ export default function CallToAction() {
           Let&apos;s Get Started
         </h2>
         <p className="text-lg text-text-secondary mb-10 leading-relaxed">
-          Start a conversation with us. We&apos;ll reach out to discuss how CAP
-          <sup>©</sup> can transform your placement outcomes.
+          Start a conversation today. Bring CAP<sup>©</sup> to your institution and transform your placement outcomes!
         </p>
 
         {isSubmitted ? (

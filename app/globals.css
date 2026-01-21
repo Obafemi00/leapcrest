@@ -30,6 +30,11 @@ body {
   }
 }
 
+/* Hero heading brand blue - explicit override */
+#home h1 {
+  color: #0B1F33 !important;
+}
+
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
