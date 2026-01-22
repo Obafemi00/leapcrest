@@ -13,7 +13,7 @@ export default function TheProblem() {
   const isLineInView = useInView(lineRef, { once: true, margin: "-100px" });
 
   return (
-    <section className="min-h-screen md:h-screen flex items-center py-20 md:py-0 px-6 lg:px-8 bg-background-light">
+    <section className="min-h-screen md:h-screen flex items-center py-20 md:py-0 px-6 lg:px-8 bg-background-light mt-16 md:mt-24">
       <div className="container mx-auto max-w-6xl w-full">
         <motion.div
           initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 12 }}

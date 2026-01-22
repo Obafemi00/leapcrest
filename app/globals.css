@@ -57,3 +57,65 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #94A3B8;
 }
+
+/* Ocean Wave Background - Curved Horizontal Lines */
+.hero-waves {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Wave line container */
+.hero-waves .wave-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Individual wave segment - creates the curve */
+.hero-waves .wave-segment {
+  position: absolute;
+  width: calc(100% / 60);
+  height: 1px;
+  background: #0B1F33;
+  opacity: 0.04;
+  top: 0;
+  transform-origin: center;
+  /* Base offset creates the wave shape */
+  transform: translateY(var(--base-offset, 0px));
+  animation: waveCurve ease-in-out infinite;
+  animation-duration: calc(50s + var(--line-index, 0) * 1.5s);
+  /* Stagger animation to make wave move */
+  animation-delay: calc(var(--segment-index) * 0.03s + var(--wave-phase, 0) * 0.3s);
+}
+
+/* Wave curve animation - shifts the wave phase to create motion */
+@keyframes waveCurve {
+  0% {
+    transform: translateY(var(--base-offset, 0px));
+  }
+  25% {
+    /* Shift wave by 90 degrees */
+    transform: translateY(calc(var(--base-offset, 0px) + 8px));
+  }
+  50% {
+    /* Shift wave by 180 degrees */
+    transform: translateY(calc(var(--base-offset, 0px) * -1));
+  }
+  75% {
+    /* Shift wave by 270 degrees */
+    transform: translateY(calc(var(--base-offset, 0px) * -1 - 8px));
+  }
+  100% {
+    transform: translateY(var(--base-offset, 0px));
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .hero-waves .wave-segment {
+    animation: none;
+  }
+}
