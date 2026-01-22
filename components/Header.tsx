@@ -41,11 +41,11 @@ export default function Header() {
           >
             <div className="-ml-1">
               <Image
-                src="/logos/LeapCrest White PNG-trimmed.png"
+                src="/logo/usethislogo.png"
                 alt="Leapcrest"
-                width={240}
-                height={72}
-                className="h-16 md:h-20 lg:h-24 w-auto object-contain"
+                width={160}
+                height={48}
+                className="h-10 md:h-12 lg:h-14 w-auto object-contain"
                 priority
               />
             </div>

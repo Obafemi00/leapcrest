@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion, useInView } from "framer-motion";
 import { useRef } from "react";
-import CinematicSpeedometer from "./CinematicSpeedometer";
+import ProblemDataVisual from "./ProblemDataVisual";
 
 // Deep blue from logo - matches text-primary #0B1F33
 const brandBlue = "#0B1F33";
@@ -13,8 +13,8 @@ export default function TheProblem() {
   const isLineInView = useInView(lineRef, { once: true, margin: "-100px" });
 
   return (
-    <section className="min-h-screen md:h-screen flex items-center py-20 md:py-0 px-6 lg:px-8 bg-background-light mt-16 md:mt-24">
-      <div className="container mx-auto max-w-6xl w-full">
+    <section className="min-h-[120vh] flex items-center py-20 md:py-24 px-6 lg:px-8 bg-background-light relative z-0 mt-[50px] overflow-hidden">
+      <div className="container mx-auto max-w-6xl w-full relative">
         <motion.div
           initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -43,6 +43,17 @@ export default function TheProblem() {
               traditional curricula cannot fully address.
             </motion.p>
 
+            {/* Data-driven visual block */}
+            <motion.div
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.3 }}
+              className="mb-16"
+            >
+              <ProblemDataVisual />
+            </motion.div>
+
             {/* Animated horizontal line */}
             <div ref={lineRef} className="relative mb-16 h-px overflow-hidden">
               <motion.div
@@ -59,11 +70,6 @@ export default function TheProblem() {
                 }}
               />
             </div>
-          </div>
-
-          {/* Cinematic Speedometer */}
-          <div className="flex items-center justify-center w-full">
-            <CinematicSpeedometer finalValue={85} />
           </div>
         </motion.div>
       </div>

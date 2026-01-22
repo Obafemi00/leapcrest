@@ -24,13 +24,15 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="min-h-screen flex flex-col bg-white relative hero-waves pb-24 md:pb-32"
+      className="min-h-screen flex flex-col bg-white relative overflow-hidden mb-24 md:mb-32"
     >
       {/* Client-only wave background to prevent hydration mismatches */}
-      <HeroWaves />
+      <div className="absolute inset-0 overflow-hidden z-0">
+        <HeroWaves />
+      </div>
       
       {/* Centered content */}
-      <div className="flex-1 flex items-center justify-center px-6 lg:px-8 pt-24 pb-20 relative z-10">
+      <div className="flex-1 flex items-center justify-center px-6 lg:px-8 relative z-10 min-h-0">
         <div className="container mx-auto max-w-3xl">
           <motion.div
             initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 8 }}

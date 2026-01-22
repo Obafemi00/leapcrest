@@ -2,8 +2,8 @@
 
 export default function ProblemReframe() {
   return (
-    <section className="py-20 px-6 lg:px-8 bg-white">
-      <div className="container mx-auto max-w-4xl">
+    <section className="h-screen flex items-center justify-center px-6 lg:px-8 bg-white">
+      <div className="container mx-auto max-w-4xl w-full">
         <div className="border-l-4 border-primary pl-8">
           <h3 className="text-2xl md:text-3xl font-bold text-text-primary mb-6 leading-tight">
             This is an institutional problem,

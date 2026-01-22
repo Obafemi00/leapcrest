@@ -109,10 +109,10 @@ export default function EmployerSkillGaps() {
   return (
     <section
       ref={containerRef}
-      className="py-20 px-6 lg:px-8"
+      className="min-h-screen flex items-center justify-center px-6 lg:px-8 mt-[50px]"
       style={{ backgroundColor: bgColor }}
     >
-      <div className="container mx-auto max-w-7xl">
+      <div className="container mx-auto max-w-7xl w-full py-12">
         <div className="grid grid-cols-1 lg:grid-cols-[65%_35%] gap-12 lg:gap-16 items-center">
           {/* LEFT COLUMN - Bar Chart */}
           <motion.div
