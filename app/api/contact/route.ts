@@ -52,8 +52,12 @@ Submitted at: ${new Date().toLocaleString()}
       `,
     };
 
-    // Attempt to send email (non-blocking - don't fail the request if email fails)
+    // Attempt to send email using Resend API
     const RESEND_API_KEY = process.env.RESEND_API_KEY || "";
+    const FROM_EMAIL = process.env.FROM_EMAIL || "Leapcrest Contact Form <onboarding@resend.dev>";
+    
+    let emailSent = false;
+    let emailError: string | null = null;
     
     if (RESEND_API_KEY) {
       try {
@@ -67,7 +71,7 @@ Submitted at: ${new Date().toLocaleString()}
             Authorization: `Bearer ${RESEND_API_KEY}`,
           },
           body: JSON.stringify({
-            from: "Leapcrest Contact Form <onboarding@resend.dev>",
+            from: FROM_EMAIL,
             to: emailData.to,
             subject: emailData.subject,
             html: emailData.html,
@@ -78,24 +82,53 @@ Submitted at: ${new Date().toLocaleString()}
 
         clearTimeout(timeoutId);
 
-        if (!response.ok) {
-          const errorText = await response.text().catch(() => "Unknown error");
-          console.error("Resend API error:", response.status, errorText);
-          // Continue - don't fail the request
+        if (response.ok) {
+          const result = await response.json();
+          emailSent = true;
+          console.log("Email sent successfully:", result);
+        } else {
+          // Read raw text once to avoid consuming stream twice
+          let rawText = "";
+          try {
+            rawText = await response.text();
+          } catch (textError) {
+            rawText = "";
+          }
+
+          // Try to parse as JSON, fallback to raw text or status
+          let errorMessage = `HTTP ${response.status}`;
+          if (rawText) {
+            try {
+              const errorData = JSON.parse(rawText);
+              errorMessage = errorData.message || errorData.error || rawText;
+            } catch (parseError) {
+              // Not valid JSON, use raw text
+              errorMessage = rawText;
+            }
+          }
+
+          emailError = errorMessage;
+          console.error("Resend API error:", response.status, errorMessage);
         }
-      } catch (emailError) {
+      } catch (err) {
         // Log email error but don't fail the request
-        console.error("Email sending error (non-fatal):", emailError);
+        emailError = err instanceof Error ? err.message : "Unknown error";
+        console.error("Email sending error (non-fatal):", err);
       }
     } else {
       // Log in development/staging
-      console.log("Email would be sent to:", emailData.to);
+      console.warn("RESEND_API_KEY not configured. Email would be sent to:", emailData.to);
       console.log("Email data:", emailData);
+      emailError = "RESEND_API_KEY not configured";
     }
 
-    // Always return success - form submission is recorded even if email fails
+    // Return success with email status for debugging
     return NextResponse.json(
-      { message: "Form submitted successfully" },
+      { 
+        message: "Form submitted successfully",
+        emailSent,
+        ...(emailError && { emailError: "Email delivery may have failed. Please check server logs." })
+      },
       { status: 200 }
     );
   } catch (error) {

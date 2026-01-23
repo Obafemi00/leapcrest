@@ -209,7 +209,7 @@ export default function CompactSpeedometer({
       {isTimeBased && timeValue && (
         <div className="mb-3">
           <span
-            className="text-2xl md:text-3xl font-bold"
+            className="text-lg md:text-xl font-normal"
             style={{ color: "#0B1F33" }}
           >
             {timeValue}

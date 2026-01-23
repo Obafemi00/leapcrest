@@ -28,7 +28,7 @@ export default function Hero() {
     >
       {/* Client-only wave background to prevent hydration mismatches */}
       <div className="absolute inset-0 overflow-hidden z-0">
-        <HeroWaves />
+      <HeroWaves />
       </div>
       
       {/* Centered content */}
