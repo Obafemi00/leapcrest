@@ -42,19 +42,20 @@ export default function CallToAction() {
   return (
     <section
       id="cta"
-      className="py-20 px-6 lg:px-8 bg-white"
+      className="py-20 px-6 lg:px-8"
+      style={{ backgroundColor: "#061423" }}
     >
       <div className="container mx-auto max-w-2xl">
-        <h2 className="text-3xl md:text-4xl font-bold text-text-primary mb-6">
+        <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
           Let&apos;s Get Started
         </h2>
-        <p className="text-lg text-text-secondary mb-10 leading-relaxed">
+        <p className="text-lg text-gray-300 mb-10 leading-relaxed">
           Start a conversation today. Bring CAP<sup>©</sup> to your institution and transform your placement outcomes!
         </p>
 
         {isSubmitted ? (
-          <div className="border border-primary/30 bg-background-light p-8 text-center">
-            <p className="text-lg font-medium text-text-primary">
+          <div className="border border-primary/30 bg-white/10 p-8 text-center">
+            <p className="text-lg font-medium text-white">
               Thank you. We will be in touch shortly.
             </p>
           </div>
@@ -63,7 +64,7 @@ export default function CallToAction() {
             <div>
               <label
                 htmlFor="name"
-                className="block text-sm font-medium text-text-primary mb-2"
+                className="block text-sm font-medium text-white mb-2"
               >
                 Name <span className="text-primary">*</span>
               </label>
@@ -71,7 +72,7 @@ export default function CallToAction() {
                 {...register("name")}
                 type="text"
                 id="name"
-                className="w-full px-4 py-3 border border-border rounded text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary transition-colors"
+                className="w-full px-4 py-3 border border-gray-600 rounded bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-primary transition-colors"
                 placeholder="Your full name"
                 aria-invalid={errors.name ? "true" : "false"}
                 aria-describedby={errors.name ? "name-error" : undefined}
@@ -90,7 +91,7 @@ export default function CallToAction() {
             <div>
               <label
                 htmlFor="institutionName"
-                className="block text-sm font-medium text-text-primary mb-2"
+                className="block text-sm font-medium text-white mb-2"
               >
                 Institution Name <span className="text-primary">*</span>
               </label>
@@ -98,7 +99,7 @@ export default function CallToAction() {
                 {...register("institutionName")}
                 type="text"
                 id="institutionName"
-                className="w-full px-4 py-3 border border-border rounded text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary transition-colors"
+                className="w-full px-4 py-3 border border-gray-600 rounded bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-primary transition-colors"
                 placeholder="Your institution name"
                 aria-invalid={errors.institutionName ? "true" : "false"}
                 aria-describedby={
@@ -119,7 +120,7 @@ export default function CallToAction() {
             <div>
               <label
                 htmlFor="phoneNumber"
-                className="block text-sm font-medium text-text-primary mb-2"
+                className="block text-sm font-medium text-white mb-2"
               >
                 Phone Number <span className="text-primary">*</span>
               </label>
@@ -127,8 +128,8 @@ export default function CallToAction() {
                 {...register("phoneNumber")}
                 type="tel"
                 id="phoneNumber"
-                className="w-full px-4 py-3 border border-border rounded text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary transition-colors"
-                placeholder="+91 1234567890"
+                className="w-full px-4 py-3 border border-gray-600 rounded bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-primary transition-colors"
+                placeholder="+91-96547-65538"
                 aria-invalid={errors.phoneNumber ? "true" : "false"}
                 aria-describedby={
                   errors.phoneNumber ? "phone-error" : undefined
@@ -148,7 +149,7 @@ export default function CallToAction() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-text-primary mb-2"
+                className="block text-sm font-medium text-white mb-2"
               >
                 Email Address <span className="text-primary">*</span>
               </label>
@@ -156,7 +157,7 @@ export default function CallToAction() {
                 {...register("email")}
                 type="email"
                 id="email"
-                className="w-full px-4 py-3 border border-border rounded text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary transition-colors"
+                className="w-full px-4 py-3 border border-gray-600 rounded bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-primary transition-colors"
                 placeholder="your.email@institution.edu"
                 aria-invalid={errors.email ? "true" : "false"}
                 aria-describedby={errors.email ? "email-error" : undefined}

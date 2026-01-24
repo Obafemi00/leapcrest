@@ -1,8 +1,7 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import TheProblem from "@/components/TheProblem";
-import ProblemReframe from "@/components/ProblemReframe";
-import EmployerSkillGaps from "@/components/EmployerSkillGaps";
+import InsightsSplit from "@/components/InsightsSplit";
 import IntroducingCAP from "@/components/IntroducingCAP";
 import WhyLeapcrestCAP from "@/components/WhyLeapcrestCAP";
 import CAPFramework from "@/components/CAPFramework";
@@ -15,8 +14,7 @@ export default function Home() {
       <Header />
       <Hero />
       <TheProblem />
-      <ProblemReframe />
-      <EmployerSkillGaps />
+      <InsightsSplit />
       <IntroducingCAP />
       <WhyLeapcrestCAP />
       <CAPFramework />

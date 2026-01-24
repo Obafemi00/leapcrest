@@ -63,7 +63,8 @@ export default function WhyLeapcrestCAP() {
   return (
     <section
       id="why-cap"
-      className="min-h-screen md:h-screen flex items-center py-20 md:py-0 px-6 lg:px-8 bg-background-light"
+      className="min-h-screen md:h-screen flex items-center py-20 md:py-0 px-6 lg:px-8"
+      style={{ backgroundColor: "#061423" }}
     >
       <div className="container mx-auto max-w-6xl w-full">
         <motion.div
@@ -75,7 +76,7 @@ export default function WhyLeapcrestCAP() {
         >
           {/* Header Section */}
           <div className="text-center space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-text-primary">
+            <h2 className="text-3xl md:text-4xl font-bold text-white">
               Why Leapcrest CAP<sup>©</sup>?
             </h2>
             <p
@@ -107,10 +108,10 @@ export default function WhyLeapcrestCAP() {
 
                 {/* Content */}
                 <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-text-primary mb-3">
+                  <h3 className="text-xl font-semibold text-white mb-3">
                     {point.title}
                   </h3>
-                  <p className="text-text-secondary leading-relaxed">
+                  <p className="text-gray-300 leading-relaxed">
                     {point.description}
                   </p>
                 </div>

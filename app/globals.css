@@ -30,10 +30,31 @@ body {
   }
 }
 
-/* Hero heading brand blue - explicit override */
-#home h1 {
-  color: #0B1F33 !important;
+/* Combined Insights Split Section (Chart + Institutional Problem) */
+.insights-split {
+  padding: clamp(40px, 6vw, 96px) 0;
 }
+
+.insights-split__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(24px, 4vw, 64px);
+  align-items: start;
+}
+
+@media (min-width: 768px) {
+  .insights-split__grid {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+}
+
+@media (max-width: 767px) {
+  .insights-split__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Hero heading color is controlled inside the Hero component */
 
 /* Smooth scrolling */
 html {

@@ -28,11 +28,11 @@ export default function Footer() {
               </p>
               <p>
                 <a
-                  href="tel:+919654765538"
+                  href="tel:+91-96547-65538"
                   className="hover:text-primary transition-colors"
                   aria-label="Phone Leapcrest"
                 >
-                  +91-965-476-5538
+                  +91-96547-65538
                 </a>
               </p>
             </div>

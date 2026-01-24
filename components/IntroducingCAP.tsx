@@ -70,10 +70,7 @@ export default function IntroducingCAP() {
     <section
       ref={sectionRef}
       id="introducing-cap"
-      className="min-h-screen flex items-center justify-center py-24 md:py-32 px-6 lg:px-8 w-full relative overflow-hidden"
-      style={{
-        background: `linear-gradient(180deg, ${brandBlue} 0%, ${brandBlueDarker} 100%)`,
-      }}
+      className="min-h-screen flex items-center justify-center py-24 md:py-32 px-6 lg:px-8 w-full relative overflow-hidden bg-background-light"
     >
       <div className="container mx-auto max-w-7xl w-full">
         <div className="flex flex-col items-center text-center space-y-16">
@@ -88,12 +85,12 @@ export default function IntroducingCAP() {
             className="space-y-6 max-w-4xl"
           >
             <h2
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold text-text-primary leading-tight tracking-tight"
               style={{ letterSpacing: "0.02em" }}
             >
               Introducing the Career Accelerator Program (CAP<sup>©</sup>)
             </h2>
-            <p className="text-lg md:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-text-secondary leading-relaxed max-w-2xl mx-auto">
               A systematic, institutional solution that bridges curriculum and placement outcomes—
               programs that are embedded, measured, and aligned with your institutional goals.
             </p>
@@ -143,10 +140,10 @@ export default function IntroducingCAP() {
 
                 {/* Content */}
                 <div className="space-y-3">
-                  <h3 className="text-lg md:text-xl font-semibold text-white leading-tight">
+                  <h3 className="text-lg md:text-xl font-semibold text-text-primary leading-tight">
                     {feature.title}
                   </h3>
-                  <p className="text-sm md:text-base text-gray-300 leading-relaxed max-w-xs mx-auto">
+                  <p className="text-sm md:text-base text-text-secondary leading-relaxed max-w-xs mx-auto">
                     {feature.description}
                   </p>
                 </div>

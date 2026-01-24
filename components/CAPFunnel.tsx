@@ -16,27 +16,28 @@ const funnelSegments: FunnelSegment[] = [
     name: "Continuous Support",
     details:
       "1:1 counselling, guidance on internships & projects, monthly office hours, and much more.",
-    color: "#1F9D8F", // Brand teal
+    // Monotone brand gradient (light → dark), derived from brand teal/blue palette
+    color: "#3FBFB0", // Lightest teal
     widthRatio: 1.0, // WIDEST (TOP)
   },
   {
     name: "Higher Education",
-    color: "#D946EF", // Magenta
+    color: "#2AA89B", // Teal-blue
     widthRatio: 0.8,
   },
   {
     name: "Advanced Placement Bootcamp",
-    color: "#78350F", // Dark brown
+    color: "#0B1F33", // Mid brand blue (site deep-blue)
     widthRatio: 0.6,
   },
   {
     name: "Booster Week",
-    color: "#6B7280", // Grey
+    color: "#081829", // Deeper navy-blue
     widthRatio: 0.45,
   },
   {
     name: "Foundation Week",
-    color: "#9333EA", // Purple
+    color: "#050F1A", // Darkest navy-blue
     widthRatio: 0.4, // NARROW TIP (BOTTOM)
   },
 ];
