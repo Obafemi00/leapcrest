@@ -43,7 +43,7 @@ export default function Footer() {
               Connect
             </h4>
             <a
-              href="https://www.linkedin.com/company/leapcrest"
+              href="https://www.linkedin.com/company/leapcrest-workforce-solutions/"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center text-text-secondary hover:text-primary transition-colors text-sm"

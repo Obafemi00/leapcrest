@@ -3,8 +3,8 @@
 import { motion, useReducedMotion } from "framer-motion";
 import dynamic from "next/dynamic";
 
-// Dynamically import Lottie background with SSR disabled to prevent hydration mismatches
-const HeroLottieBackground = dynamic(() => import("./hero/HeroLottieBackground"), {
+// Dynamically import network background with SSR disabled to prevent hydration mismatches
+const HeroNetworkBackground = dynamic(() => import("./hero/HeroNetworkBackground"), {
   ssr: false,
 });
 
@@ -23,11 +23,11 @@ export default function Hero() {
       id="home"
       className="min-h-screen max-h-screen flex flex-col bg-[#061423] relative overflow-hidden mb-24 md:mb-32"
     >
-      {/* Client-only Lottie background to prevent hydration mismatches */}
-      <HeroLottieBackground />
+      {/* Client-only network background to prevent hydration mismatches */}
+      <HeroNetworkBackground />
       
       {/* Subtle overlay gradient for text readability (center-left area) */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent pointer-events-none z-[1]" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent pointer-events-none z-[5]" />
       
       {/* Left-aligned content */}
       <div className="flex-1 flex items-center px-6 lg:px-8 pt-24 md:pt-28 relative z-10 min-h-0">

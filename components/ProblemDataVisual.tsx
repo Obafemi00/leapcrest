@@ -11,8 +11,8 @@ export default function ProblemDataVisual() {
   const durationMs = 1500;
 
   const [t1, setT1] = useState(0); // 0 → 1
-  const [t2, setT2] = useState(0); // 0 → 47 (midpoint)
-  const [t3, setT3] = useState(0); // 0 → 33 (midpoint)
+  const [t2, setT2] = useState(0); // 0 → 50
+  const [t3, setT3] = useState(0); // 0 → 35
   const [t4, setT4] = useState(0); // 0.0 → 2.5
   const [done, setDone] = useState(false);
 
@@ -21,8 +21,8 @@ export default function ProblemDataVisual() {
   const targets = useMemo(
     () => ({
       crore: 1,
-      employableMid: 47,
-      corporateMid: 33,
+      employableMid: 50,
+      corporateMid: 35,
       years: 2.5,
     }),
     [],
@@ -101,7 +101,7 @@ export default function ProblemDataVisual() {
           {/* Tile 2 */}
           <div className="text-center">
             <div className="text-4xl md:text-5xl font-bold tracking-tight text-white">
-              {done ? "45–50%" : `${t2}%`}
+              {done ? "50%" : `${t2}%`}
             </div>
             <div className="mt-3 text-sm text-white/70 leading-relaxed">
               considered employable beyond basic clerical work
@@ -111,7 +111,7 @@ export default function ProblemDataVisual() {
           {/* Tile 3 */}
           <div className="text-center">
             <div className="text-4xl md:text-5xl font-bold tracking-tight text-white">
-              {done ? "30–35%" : `${t3}%`}
+              {done ? "35%" : `${t3}%`}
             </div>
             <div className="mt-3 text-sm text-white/70 leading-relaxed">
               employable for white-collar / corporate roles

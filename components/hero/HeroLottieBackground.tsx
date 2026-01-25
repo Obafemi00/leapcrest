@@ -1,11 +1,16 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import Lottie from "lottie-react";
-import animationData from "@/assets/leapcrest-hero.json";
 
-type LottieJson = Record<string, unknown>;
+type LottieJson = {
+  v: string;
+  fr: number;
+  ip: number;
+  op: number;
+  layers: unknown[];
+};
 
 function isValidLottieJson(data: unknown): data is LottieJson {
   if (typeof data !== "object" || data === null) return false;
@@ -21,43 +26,44 @@ function isValidLottieJson(data: unknown): data is LottieJson {
 
 export default function HeroLottieBackground() {
   const shouldReduceMotion = useReducedMotion();
+  const [animationData, setAnimationData] = useState<LottieJson | null>(null);
+  const [hasError, setHasError] = useState(false);
 
-  // TEMP debugging to determine actual imported shape
-  console.log("Lottie animationData raw:", animationData);
-  console.log("typeof:", typeof animationData);
-  console.log("keys:", animationData && typeof animationData === "object" ? Object.keys(animationData as any) : "n/a");
-  console.log("default keys:", (animationData as any)?.default && typeof (animationData as any).default === "object"
-    ? Object.keys((animationData as any).default)
-    : "n/a");
+  useEffect(() => {
+    // Fetch Lottie JSON from public directory
+    fetch("/lottie/leapcrest-hero.json")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Failed to fetch Lottie JSON: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((json) => {
+        // Validate required keys exist
+        if (isValidLottieJson(json)) {
+          setAnimationData(json);
+        } else {
+          console.error("Invalid Lottie JSON: missing required keys (v, fr, ip, op, layers)");
+          setHasError(true);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to load Lottie animation:", err);
+        setHasError(true);
+      });
+  }, []);
 
-  // Normalize the import result before validation
-  const normalizedAnimationData =
-    (animationData as any)?.v ? animationData :
-    (animationData as any)?.default?.v ? (animationData as any).default :
-    null;
-
-  // Validate ONLY the normalized object
-  if (!normalizedAnimationData) {
-    console.error("Lottie animationData is null/invalid import shape");
+  // Render nothing on server or if there's an error
+  if (hasError || !animationData) {
     return null;
   }
-
-  if (!isValidLottieJson(normalizedAnimationData)) {
-    console.error("Invalid Lottie JSON after normalization. keys=", Object.keys(normalizedAnimationData));
-    return null;
-  }
-
-  const opacityClass = useMemo(
-    () => "opacity-[0.15] md:opacity-[0.32]",
-    [],
-  );
 
   return (
     <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
       {/* Lottie layer */}
-      <div className={`absolute inset-0 ${opacityClass}`}>
+      <div className="absolute inset-0 opacity-[0.15] md:opacity-[0.32]">
         <Lottie
-          animationData={normalizedAnimationData}
+          animationData={animationData}
           loop={!shouldReduceMotion}
           autoplay={!shouldReduceMotion}
           style={{ width: "100%", height: "100%" }}
