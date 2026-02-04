@@ -21,6 +21,8 @@ export default function HeroNetworkBackground() {
   const nodesRef = useRef<Node[]>([]);
   const sweepXRef = useRef(0);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const phaseRef = useRef<"intro" | "ambient">("intro");
+  const introStartTimeRef = useRef<number>(0);
   const shouldReduceMotion = useReducedMotion();
   const [isMounted, setIsMounted] = useState(false);
 
@@ -137,34 +139,56 @@ export default function HeroNetworkBackground() {
 
     nodesRef.current = generateNodes();
 
-    // GSAP timeline for energy sweep
+    // Initialize intro phase
+    const introStartTime = performance.now();
+    introStartTimeRef.current = introStartTime;
+    phaseRef.current = "intro";
+    const introDuration = 2200; // 2.2 seconds
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
+    // GSAP timeline for ambient energy sweep (after intro)
     if (!shouldReduceMotion) {
-      const tl = gsap.timeline({ repeat: -1, ease: "none" });
+      // Start intro sweep at left edge
+      sweepXRef.current = -200;
       
-      // Energy sweep: left to right, then wrap with fade
+      // Ambient loop timeline (starts after intro)
+      const tl = gsap.timeline({ 
+        repeat: -1, 
+        ease: "none",
+        paused: true, // Will be unpaused after intro
+      });
+      
+      // Ambient energy sweep: left to right, then wrap with fade
       tl.to(sweepXRef, {
-        current: container.clientWidth + 300,
-        duration: 10,
+        current: width + 300,
+        duration: 12,
         ease: "power1.inOut",
       })
         .to(sweepXRef, {
           current: -300,
-          duration: 0.8,
+          duration: 1,
           ease: "power1.in",
         })
         .to(sweepXRef, {
-          current: container.clientWidth + 300,
-          duration: 10,
+          current: width + 300,
+          duration: 12,
           ease: "power1.inOut",
         });
 
       timelineRef.current = tl;
     } else {
       // Reduced motion: static position
-      sweepXRef.current = container.clientWidth / 2;
+      sweepXRef.current = width / 2;
     }
 
     let lastTime = performance.now();
+
+    // Gaussian function for smooth falloff
+    const gaussianInfluence = (x: number, center: number, sigma: number): number => {
+      const diff = x - center;
+      return Math.exp(-(diff * diff) / (2 * sigma * sigma));
+    };
 
     // Animation loop
     const animate = (currentTime: number) => {
@@ -179,10 +203,58 @@ export default function HeroNetworkBackground() {
       ctx.clearRect(0, 0, width, height);
 
       const nodes = nodesRef.current;
-      const sweepX = sweepXRef.current;
-      const sweepY = height / 2; // Center vertically
-      const sweepRadius = 180; // Distance for illumination effect (soft band)
       const time = currentTime * 0.001;
+      const introStartTime = introStartTimeRef.current;
+      const phase = phaseRef.current;
+      const introDuration = 2200;
+      const introElapsed = currentTime - introStartTime;
+      
+      // Define text safe zone for brightness clamping
+      const textSafeZone = {
+        left: width * 0.15,
+        right: width * 0.85,
+        top: height * 0.2,
+        bottom: height * 0.8,
+      };
+
+      let sweepX: number;
+      let sweepY: number;
+      let sweepStrength: number;
+      let sigma: number; // Gaussian sigma for falloff
+
+      // Handle intro phase
+      if (phase === "intro" && !shouldReduceMotion && introElapsed < introDuration) {
+        const introProgress = Math.min(introElapsed / introDuration, 1);
+        
+        // Sweep moves from left to right
+        const startX = -200;
+        const endX = width + 200;
+        sweepX = startX + (endX - startX) * introProgress;
+        sweepY = height * 0.45; // Slightly above mid-height
+        
+        // Sweep strength: high at start, eases down near end
+        sweepStrength = 1 - introProgress * 0.3; // 1.0 -> 0.7
+        
+        // Gaussian sigma (responsive)
+        sigma = isMobile ? 120 : 180;
+        
+        // Transition to ambient when intro completes
+        if (introProgress >= 1) {
+          phaseRef.current = "ambient";
+          if (timelineRef.current) {
+            timelineRef.current.play();
+          }
+        }
+      } else {
+        // Ambient phase (or reduced motion)
+        if (phase === "intro") {
+          phaseRef.current = "ambient";
+        }
+        sweepX = sweepXRef.current;
+        sweepY = height / 2; // Center vertically
+        sweepStrength = shouldReduceMotion ? 0 : 0.4; // Gentler in ambient
+        sigma = isMobile ? 150 : 200; // Wider, softer band
+      }
 
       // Update node positions (slow drift)
       if (!shouldReduceMotion) {
@@ -205,16 +277,40 @@ export default function HeroNetworkBackground() {
         node.connections.forEach((connIndex) => {
           const connected = nodes[connIndex];
           
+          // Calculate bond orientation
+          const dx = connected.x - node.x;
+          const dy = connected.y - node.y;
+          const isHorizontal = Math.abs(dy) < Math.abs(dx) * 0.6;
+          
           // Calculate midpoint for sweep influence
           const midX = (node.x + connected.x) / 2;
           const midY = (node.y + connected.y) / 2;
-          const distToSweep = Math.sqrt(
-            Math.pow(midX - sweepX, 2) + Math.pow(midY - sweepY, 2)
-          );
-          const sweepInfluence = Math.max(0, 1 - distToSweep / sweepRadius);
+          
+          // Use Gaussian falloff for smooth band effect
+          const horizontalDist = Math.abs(midX - sweepX);
+          const verticalDist = Math.abs(midY - sweepY);
+          const horizontalInfluence = gaussianInfluence(midX, sweepX, sigma);
+          const verticalInfluence = Math.max(0, 1 - verticalDist / (sigma * 1.5));
+          let sweepInfluence = horizontalInfluence * verticalInfluence * sweepStrength;
+          
+          // During intro, emphasize horizontal bonds
+          if (phase === "intro" && isHorizontal) {
+            sweepInfluence *= 1.4; // Boost horizontal bonds
+          }
+          
+          // Clamp brightness in text safe zone
+          const inSafeZone = 
+            midX > textSafeZone.left && 
+            midX < textSafeZone.right && 
+            midY > textSafeZone.top && 
+            midY < textSafeZone.bottom;
+          
+          if (inSafeZone) {
+            sweepInfluence *= 0.5; // Reduce brightness behind text
+          }
 
           // Teal bond color with low base opacity
-          const bondOpacity = 0.18 + sweepInfluence * 0.12; // 0.18-0.30
+          const bondOpacity = 0.18 + sweepInfluence * 0.15; // 0.18-0.33
           ctx.strokeStyle = `rgba(46, 200, 180, ${bondOpacity})`;
           ctx.beginPath();
           ctx.moveTo(node.x, node.y);
@@ -225,21 +321,32 @@ export default function HeroNetworkBackground() {
 
       // Draw energy sweep band (soft horizontal band)
       if (!shouldReduceMotion) {
-        const sweepBandHeight = 80; // Soft band height
-        const gradient = ctx.createRadialGradient(
-          sweepX,
+        const sweepBandHeight = phase === "intro" ? 100 : 80; // Taller during intro
+        const bandOpacity = phase === "intro" ? 0.2 : 0.12; // More visible during intro
+        
+        // Use Gaussian-based gradient for smoother falloff
+        const gradient = ctx.createLinearGradient(
+          sweepX - sigma * 2,
           sweepY,
-          0,
-          sweepX,
-          sweepY,
-          sweepRadius
+          sweepX + sigma * 2,
+          sweepY
         );
-        gradient.addColorStop(0, "rgba(31, 157, 143, 0.15)");
-        gradient.addColorStop(0.5, "rgba(31, 157, 143, 0.08)");
-        gradient.addColorStop(1, "rgba(31, 157, 143, 0)");
+        
+        // Create Gaussian-like stops
+        const centerStop = 0.5;
+        gradient.addColorStop(0, `rgba(31, 157, 143, 0)`);
+        gradient.addColorStop(centerStop - 0.2, `rgba(31, 157, 143, ${bandOpacity * 0.3})`);
+        gradient.addColorStop(centerStop, `rgba(31, 157, 143, ${bandOpacity})`);
+        gradient.addColorStop(centerStop + 0.2, `rgba(31, 157, 143, ${bandOpacity * 0.3})`);
+        gradient.addColorStop(1, `rgba(31, 157, 143, 0)`);
 
         ctx.fillStyle = gradient;
-        ctx.fillRect(sweepX - sweepRadius, sweepY - sweepBandHeight / 2, sweepRadius * 2, sweepBandHeight);
+        ctx.fillRect(
+          sweepX - sigma * 2, 
+          sweepY - sweepBandHeight / 2, 
+          sigma * 4, 
+          sweepBandHeight
+        );
       }
 
       // Draw nodes (atoms) with yellowish glow
@@ -247,21 +354,33 @@ export default function HeroNetworkBackground() {
       const glowRadius = isMobile ? 2.5 : 3.5;
 
       nodes.forEach((node) => {
-        // Calculate distance from sweep band
-        const distToSweep = Math.sqrt(
-          Math.pow(node.x - sweepX, 2) + Math.pow(node.y - sweepY, 2)
-        );
-        const sweepInfluence = Math.max(0, 1 - distToSweep / sweepRadius);
+        // Use Gaussian falloff for smooth band effect
+        const horizontalDist = Math.abs(node.x - sweepX);
+        const verticalDist = Math.abs(node.y - sweepY);
+        const horizontalInfluence = gaussianInfluence(node.x, sweepX, sigma);
+        const verticalInfluence = Math.max(0, 1 - verticalDist / (sigma * 1.5));
+        let sweepInfluence = horizontalInfluence * verticalInfluence * sweepStrength;
+        
+        // Clamp brightness in text safe zone
+        const inSafeZone = 
+          node.x > textSafeZone.left && 
+          node.x < textSafeZone.right && 
+          node.y > textSafeZone.top && 
+          node.y < textSafeZone.bottom;
+        
+        if (inSafeZone) {
+          sweepInfluence *= 0.5; // Reduce brightness behind text
+        }
 
-        // Subtle twinkle (no flashing)
-        const twinkle = shouldReduceMotion
+        // Subtle twinkle (no flashing) - only in ambient phase
+        const twinkle = shouldReduceMotion || phase === "intro"
           ? 0
           : Math.sin(time * 0.6 + node.pulsePhase) * 0.15;
 
         // Glow intensity: base + sweep influence + twinkle
         const glowIntensity = Math.min(
           1,
-          node.baseGlow + sweepInfluence * 0.3 + twinkle
+          node.baseGlow + sweepInfluence * 0.4 + twinkle
         );
 
         // Draw glow halo (outer)

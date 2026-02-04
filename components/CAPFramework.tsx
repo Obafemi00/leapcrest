@@ -29,7 +29,7 @@ export default function CAPFramework() {
             {/* LEFT: Funnel (reduced size, left aligned on desktop) */}
             <div className="flex items-center justify-center min-[900px]:justify-start overflow-hidden">
               <div className="w-full max-w-[560px] origin-center scale-[0.72] sm:scale-[0.78] min-[900px]:scale-[0.7]">
-                <CAPFunnel />
+            <CAPFunnel />
               </div>
             </div>
 

@@ -40,8 +40,8 @@ export default function Hero() {
           >
             {/* Top line: "Bridging the last mile gap" */}
             <motion.div
-              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 8 }}
-              animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 8 }}
+                animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
             >
               <p className="text-sm md:text-base font-medium tracking-wider text-[#1F9D8F] uppercase">
@@ -50,14 +50,14 @@ export default function Hero() {
             </motion.div>
 
             {/* Main headline: "Elevating skills, accelerating careers" */}
-            <motion.h1
+              <motion.h1
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 12 }}
-              animate={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
               className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight tracking-tight text-white"
-            >
+              >
               Elevating skills, accelerating careers
-            </motion.h1>
+              </motion.h1>
 
             {/* Bottom line: "Industry ready talent, real outcomes" */}
             <motion.h2
