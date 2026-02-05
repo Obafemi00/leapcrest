@@ -10,7 +10,7 @@ export default function CAPFramework() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="py-20 px-6 lg:px-8 bg-background-light">
+    <section className="py-12 md:py-20 px-4 md:px-6 lg:px-8 bg-background-light">
       <div className="container mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 12 }}
@@ -36,7 +36,7 @@ export default function CAPFramework() {
             {/* RIGHT: Before vs After comparison */}
             <div className="w-full flex flex-col justify-center">
               <h3
-                className="font-bold text-text-primary mb-6"
+                className="font-bold text-text-primary mt-2 mb-6"
                 style={{ fontSize: "clamp(1.25rem, 1.05rem + 0.8vw, 1.75rem)" }}
               >
                 What Success looks like After CAP
@@ -77,7 +77,7 @@ export default function CAPFramework() {
                 </div>
               </div>
 
-              {/* Mobile (< 900px): stacked cards */}
+              {/* Mobile (< 900px): premium compact cards */}
               <div className="min-[900px]:hidden space-y-4">
                 {[
                   ["Low interview confidence", "Structured articulation"],
@@ -85,32 +85,90 @@ export default function CAPFramework() {
                   ["Reactive placements", "Predictable outcomes"],
                   ["Employer complaints", "Employer satisfaction"],
                 ].map(([before, after], idx) => (
-                  <div
+                  <motion.div
                     key={idx}
-                    className="border border-border rounded-md bg-white p-5"
+                    className="bg-white rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md transition-shadow duration-200 p-4"
+                    initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 8 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.4, delay: idx * 0.05, ease: [0.4, 0, 0.2, 1] }}
                   >
-                    <div className="grid grid-cols-1 gap-3">
-                      <div>
-                        <div className="text-xs font-semibold text-text-primary tracking-wide">
-                          BEFORE CAP
+                    {/* 2-column layout: Before | Divider | After */}
+                    <div className="grid grid-cols-[1fr_auto_1fr] gap-3 items-start">
+                      {/* BEFORE block */}
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-1.5 mb-2">
+                          {/* Low/down indicator icon */}
+                          <svg 
+                            viewBox="0 0 20 20" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            strokeWidth="2" 
+                            className="w-4 h-4 text-slate-400"
+                          >
+                            <path 
+                              strokeLinecap="round" 
+                              strokeLinejoin="round" 
+                              d="M5 8l5 5 5-5" 
+                            />
+                          </svg>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                            Before
+                          </span>
                         </div>
-                        <div className="text-sm text-text-secondary mt-1">
+                        <p className="text-base text-text-secondary leading-relaxed">
                           {before}
+                        </p>
+                      </div>
+
+                      {/* Vertical divider with arrow */}
+                      <div className="flex flex-col items-center justify-center h-full py-1">
+                        <div className="w-px h-full bg-slate-200 relative">
+                          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-0.5">
+                            <svg 
+                              viewBox="0 0 16 16" 
+                              fill="none" 
+                              className="w-3 h-3 text-slate-400"
+                            >
+                              <path 
+                                stroke="currentColor" 
+                                strokeWidth="2" 
+                                strokeLinecap="round" 
+                                strokeLinejoin="round" 
+                                d="M6 12l4-4-4-4" 
+                              />
+                            </svg>
+                          </div>
                         </div>
                       </div>
-                      <div className="text-text-secondary text-center">
-                        →
-                      </div>
-                      <div>
-                        <div className="text-xs font-semibold text-text-primary tracking-wide">
-                          AFTER CAP
+
+                      {/* AFTER block */}
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-1.5 mb-2">
+                          {/* Check/upgrade icon */}
+                          <svg 
+                            viewBox="0 0 20 20" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            strokeWidth="2" 
+                            className="w-4 h-4 text-[#3FBFB0]"
+                          >
+                            <path 
+                              strokeLinecap="round" 
+                              strokeLinejoin="round" 
+                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" 
+                            />
+                          </svg>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-[#3FBFB0]">
+                            After
+                          </span>
                         </div>
-                        <div className="text-sm text-text-secondary mt-1">
+                        <p className="text-base text-text-secondary leading-relaxed font-medium">
                           {after}
-                        </div>
+                        </p>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
