@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 
 interface FunnelSegment {
   name: string;
@@ -46,13 +46,38 @@ export default function CAPFunnel() {
   const shouldReduceMotion = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [containerWidth, setContainerWidth] = useState(600);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // SVG dimensions
-  const width = 600;
-  const totalHeight = 750; // Increased to accommodate gaps
-  const gapSize = 12; // Vertical gap between segments
-  const baseSegmentHeight = (totalHeight - gapSize * (funnelSegments.length - 1)) / funnelSegments.length;
-  const maxWidth = width * 0.9; // Maximum funnel width
+  // Responsive dimensions
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    
+    const updateDimensions = () => {
+      const width = window.innerWidth;
+      const mobile = width < 768;
+      setIsMobile(mobile);
+      
+      // On mobile: use 90-95% of viewport width
+      // On desktop: use responsive container width
+      const calculatedWidth = mobile
+        ? Math.min(width * 0.95, 600)
+        : Math.min(width * 0.9, 700);
+      setContainerWidth(calculatedWidth);
+    };
+
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
+
+  // Responsive sizing
+  const width = containerWidth;
+  // Mobile: larger segments (110-140px each), Desktop: proportional
+  const baseSegmentHeight = isMobile ? 120 : 130;
+  const gapSize = isMobile ? 18 : 12; // Larger gaps on mobile
+  const totalHeight = (baseSegmentHeight * funnelSegments.length) + (gapSize * (funnelSegments.length - 1));
+  const maxWidth = width * 0.95; // Maximum funnel width (slightly less than container)
   const centerX = width / 2;
 
   // Generate trapezoidal path for a segment
@@ -84,13 +109,13 @@ export default function CAPFunnel() {
   };
 
   return (
-    <div ref={ref} className="w-full py-12">
+    <div ref={ref} className="w-full py-6 md:py-12">
       <svg
         width="100%"
         height={totalHeight}
         viewBox={`0 0 ${width} ${totalHeight}`}
         className="overflow-visible"
-        style={{ display: "block" }}
+        style={{ display: "block", minHeight: isMobile ? `${totalHeight}px` : 'auto' }}
         preserveAspectRatio="xMidYMin meet"
       >
         {/* Shadow filter definitions - increasing intensity toward bottom */}
@@ -193,10 +218,10 @@ export default function CAPFunnel() {
             : segmentHeight;
           const textY = topY + textZoneHeight / 2;
           
-          // Typography scale: smaller font for narrower segments
-          const fontSizeBase = minWidth < width * 0.5 ? "sm" : "base";
-          const fontSizeTitle = minWidth < width * 0.5 ? "base" : "lg";
-          const fontSizeDetails = minWidth < width * 0.5 ? "xs" : "sm";
+          // Typography scale: larger on mobile, responsive on desktop
+          const fontSizeBase = isMobile ? "base" : (minWidth < width * 0.5 ? "sm" : "base");
+          const fontSizeTitle = isMobile ? "xl" : (minWidth < width * 0.5 ? "base" : "lg");
+          const fontSizeDetails = isMobile ? "sm" : (minWidth < width * 0.5 ? "xs" : "sm");
 
           return (
             <g key={index}>
@@ -267,7 +292,7 @@ export default function CAPFunnel() {
                   style={{
                     width: "100%",
                     height: "100%",
-                    padding: "0 8px",
+                    padding: isMobile ? "12px 16px" : "0 8px",
                     boxSizing: "border-box",
                   }}
                   initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
@@ -286,7 +311,13 @@ export default function CAPFunnel() {
                   }}
                 >
                   <h3
-                    className={`font-bold mb-1 ${fontSizeTitle === "lg" ? "text-lg md:text-xl" : "text-base"}`}
+                    className={`font-bold mb-1 ${
+                      isMobile 
+                        ? "text-xl" 
+                        : fontSizeTitle === "lg" 
+                          ? "text-lg md:text-xl" 
+                          : "text-base"
+                    }`}
                     style={{
                       color: "#FFFFFF",
                       lineHeight: "1.3",
@@ -298,7 +329,13 @@ export default function CAPFunnel() {
                   </h3>
                   {segment.timeline && (
                     <p
-                      className={`${fontSizeBase === "base" ? "text-sm md:text-base" : "text-xs"}`}
+                      className={`${
+                        isMobile 
+                          ? "text-base" 
+                          : fontSizeBase === "base" 
+                            ? "text-sm md:text-base" 
+                            : "text-xs"
+                      }`}
                       style={{
                         color: "rgba(255, 255, 255, 0.9)",
                         lineHeight: "1.4",
@@ -311,7 +348,13 @@ export default function CAPFunnel() {
                   )}
                   {segment.details && (
                     <p
-                      className={`mt-2 ${fontSizeDetails === "sm" ? "text-xs md:text-sm" : "text-xs"}`}
+                      className={`mt-2 ${
+                        isMobile 
+                          ? "text-sm" 
+                          : fontSizeDetails === "sm" 
+                            ? "text-xs md:text-sm" 
+                            : "text-xs"
+                      }`}
                       style={{
                         color: "rgba(255, 255, 255, 0.85)",
                         lineHeight: "1.5",

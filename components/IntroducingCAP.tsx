@@ -88,7 +88,7 @@ export default function IntroducingCAP() {
               className="text-4xl md:text-5xl lg:text-6xl font-bold text-text-primary leading-tight tracking-tight"
               style={{ letterSpacing: "0.02em" }}
             >
-              Introducing the Career Accelerator Program (CAP<sup>©</sup>)
+              Introducing the Career Accelerator Program (CAP)
             </h2>
             <p className="text-lg md:text-xl text-text-secondary leading-relaxed max-w-2xl mx-auto">
               A systematic, institutional solution that bridges curriculum and placement outcomes—

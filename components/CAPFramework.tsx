@@ -19,17 +19,17 @@ export default function CAPFramework() {
           transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
         >
           <h2
-            className="text-3xl md:text-4xl font-bold mb-6"
+            className="text-3xl md:text-4xl font-bold mb-3 md:mb-4"
             style={{ color: brandBlue }}
           >
-            CAP<sup>©</sup> Framework
+            CAP Framework
           </h2>
 
-          <div className="mt-16 grid grid-cols-1 min-[900px]:grid-cols-2 gap-12 min-[900px]:gap-16 items-stretch">
-            {/* LEFT: Funnel (reduced size, left aligned on desktop) */}
-            <div className="flex items-center justify-center min-[900px]:justify-start overflow-hidden">
-              <div className="w-full max-w-[560px] origin-center scale-[0.72] sm:scale-[0.78] min-[900px]:scale-[0.7]">
-            <CAPFunnel />
+          <div className="mt-2 md:mt-4 grid grid-cols-1 min-[900px]:grid-cols-2 gap-12 min-[900px]:gap-16 items-stretch">
+            {/* LEFT: Funnel (full-width on mobile, centered on desktop) */}
+            <div className="flex items-center justify-center w-full">
+              <div className="w-full max-w-full md:max-w-[600px] min-[900px]:max-w-[700px]">
+                <CAPFunnel />
               </div>
             </div>
 

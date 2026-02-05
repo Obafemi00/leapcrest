@@ -1,19 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Image from "next/image";
 
 export default function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -23,11 +12,7 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
-        isScrolled
-          ? "bg-white border-b border-border"
-          : "bg-transparent"
-      }`}
+      className="sticky top-0 z-50 bg-white border-b border-gray-200"
     >
       <nav
         className="container mx-auto px-6 lg:px-8 py-5"
@@ -54,17 +39,17 @@ export default function Header() {
           <div className="hidden md:flex items-center space-x-10">
             <button
               onClick={() => scrollToSection("home")}
-              className="text-text-secondary hover:text-text-primary transition-colors text-sm font-medium"
+              className="text-slate-800 hover:text-teal-600 transition-colors text-sm font-medium"
               aria-label="Navigate to home section"
             >
               Home
             </button>
             <button
               onClick={() => scrollToSection("why-cap")}
-              className="text-text-secondary hover:text-text-primary transition-colors text-sm font-medium"
+              className="text-slate-800 hover:text-teal-600 transition-colors text-sm font-medium"
               aria-label="Navigate to Why Leapcrest CAP section"
             >
-              Why Leapcrest CAP<sup>©</sup>?
+              Why Leapcrest CAP?
             </button>
             <button
               onClick={() => scrollToSection("cta")}
@@ -82,7 +67,7 @@ export default function Header() {
                 menu.classList.toggle("hidden");
               }
             }}
-            className="md:hidden text-text-secondary"
+            className="md:hidden text-slate-800"
             aria-label="Toggle mobile menu"
           >
             <svg
@@ -102,15 +87,15 @@ export default function Header() {
         <div id="mobile-menu" className="hidden md:hidden mt-4 pb-4 space-y-3">
           <button
             onClick={() => scrollToSection("home")}
-            className="block w-full text-left text-text-secondary hover:text-text-primary transition-colors text-sm font-medium py-2"
+            className="block w-full text-left text-slate-800 hover:text-teal-600 transition-colors text-sm font-medium py-2"
           >
             Home
           </button>
           <button
             onClick={() => scrollToSection("why-cap")}
-            className="block w-full text-left text-text-secondary hover:text-text-primary transition-colors text-sm font-medium py-2"
+            className="block w-full text-left text-slate-800 hover:text-teal-600 transition-colors text-sm font-medium py-2"
           >
-            Why Leapcrest CAP<sup>©</sup>?
+            Why Leapcrest CAP?
           </button>
           <button
             onClick={() => scrollToSection("cta")}

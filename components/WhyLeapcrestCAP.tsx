@@ -10,7 +10,7 @@ const points = [
   {
     title: "Not a motivational seminar",
     description:
-      "CAP© is a rigorous, outcome-driven program with structured modules and assessments.",
+      "CAP is a rigorous, outcome-driven program with structured modules and assessments.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6">
         <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
@@ -77,7 +77,7 @@ export default function WhyLeapcrestCAP() {
           {/* Header Section */}
           <div className="text-center space-y-4">
             <h2 className="text-3xl md:text-4xl font-bold text-white">
-              Why Leapcrest CAP<sup>©</sup>?
+              Why Leapcrest CAP?
             </h2>
             <p
               className="text-lg md:text-xl font-medium"

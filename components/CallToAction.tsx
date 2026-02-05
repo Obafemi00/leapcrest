@@ -14,6 +14,12 @@ export default function CallToAction() {
     reset,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
+    defaultValues: {
+      name: "",
+      institutionName: "",
+      phoneNumber: "",
+      email: "",
+    },
   });
 
   const onSubmit = async (data: ContactFormData) => {
@@ -50,7 +56,7 @@ export default function CallToAction() {
           Let&apos;s Get Started
         </h2>
         <p className="text-lg text-gray-300 mb-10 leading-relaxed">
-          Start a conversation today. Bring CAP<sup>©</sup> to your institution and transform your placement outcomes!
+          Start a conversation today. Bring CAP to your institution and transform your placement outcomes!
         </p>
 
         {isSubmitted ? (
@@ -129,7 +135,7 @@ export default function CallToAction() {
                 type="tel"
                 id="phoneNumber"
                 className="w-full px-4 py-3 border border-gray-600 rounded bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-primary transition-colors"
-                placeholder="+91-96547-65538"
+                placeholder="Enter phone number"
                 aria-invalid={errors.phoneNumber ? "true" : "false"}
                 aria-describedby={
                   errors.phoneNumber ? "phone-error" : undefined

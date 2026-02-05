@@ -33,7 +33,7 @@ const inter = localFont({
 export const metadata: Metadata = {
   title: "Leapcrest Workforce Solutions | Career Accelerator Program",
   description:
-    "Elevating Skills. Accelerating Careers. Bridge the employability gap with Leapcrest CAP© - a structured, year-long program embedded within your academic calendar.",
+    "Elevating Skills. Accelerating Careers. Bridge the employability gap with Leapcrest CAP - a structured, year-long program embedded within your academic calendar.",
   keywords: [
     "career accelerator program",
     "employability",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Leapcrest Workforce Solutions | Career Accelerator Program",
     description:
-      "Elevating Skills. Accelerating Careers. Bridge the employability gap with Leapcrest CAP©.",
+      "Elevating Skills. Accelerating Careers. Bridge the employability gap with Leapcrest CAP.",
     type: "website",
   },
 };

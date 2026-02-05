@@ -28,7 +28,8 @@ const barSpacing = 20;
 const rightMargin = 70; // Space for percentage labels
 const topMargin = 40;
 const bottomMargin = 20;
-const totalHeight =
+// Base total height - will be adjusted for mobile multi-line labels
+const baseTotalHeight =
   topMargin + barData.length * (barHeight + barSpacing) - barSpacing + bottomMargin;
 
 export default function InsightsSplit() {
@@ -45,20 +46,28 @@ export default function InsightsSplit() {
   // Responsive width calculation (based on LEFT column width)
   const [containerWidth, setContainerWidth] = useState(650);
   const [leftMargin, setLeftMargin] = useState(280);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
 
     const updateWidth = () => {
       const leftColumnWidth = leftColRef.current?.offsetWidth || 900;
-      // Chart width should fill available space without causing overflow
-      const calculatedWidth = Math.min(Math.max(leftColumnWidth - 40, 520), 760);
+      const windowWidth = window.innerWidth;
+      const mobile = windowWidth <= 640;
+      setIsMobile(mobile);
+
+      // On mobile, use full available width minus padding
+      // On desktop, use calculated width
+      const calculatedWidth = mobile
+        ? Math.max(windowWidth - 48, 320) // Account for container padding (24px each side)
+        : Math.min(Math.max(leftColumnWidth - 40, 520), 760);
       setContainerWidth(calculatedWidth);
 
-      // Leave enough space for category labels at smaller widths
-      const isMobile = window.innerWidth < 768;
-      const margin = isMobile
-        ? Math.max(calculatedWidth * 0.38, 180)
+      // On mobile (<=640px): use 160px left margin (between 140-180 as requested)
+      // On larger screens: use proportional margin
+      const margin = mobile
+        ? 160 // Fixed 160px on mobile to ensure labels are fully visible
         : Math.min(calculatedWidth * 0.45, 320);
       setLeftMargin(margin);
     };
@@ -95,10 +104,37 @@ export default function InsightsSplit() {
     .domain([0, 60])
     .range([0, Math.max(barAreaWidth, 150)]);
 
-  // Slightly reduce label sizing on small screens for readability
-  const isNarrow = containerWidth < 560;
-  const labelFontSize = isNarrow ? 11 : 13;
-  const percentFontSize = isNarrow ? 11 : 13;
+  // Reduce label sizing on mobile for better fit
+  const labelFontSize = isMobile ? 10 : 13;
+  const percentFontSize = isMobile ? 11 : 13;
+  
+  // Helper function to split long labels into 2 lines on mobile
+  const splitLabel = (text: string): string[] => {
+    if (!isMobile) return [text];
+    // Split at "&" or before the last significant word
+    if (text.includes(" & ")) {
+      const parts = text.split(" & ");
+      if (parts.length === 2) {
+        return [parts[0], `& ${parts[1]}`];
+      }
+    }
+    // For other labels, try to split at a reasonable point
+    const words = text.split(" ");
+    if (words.length > 4) {
+      const mid = Math.ceil(words.length / 2);
+      return [words.slice(0, mid).join(" "), words.slice(mid).join(" ")];
+    }
+    return [text];
+  };
+  
+  // Calculate total height accounting for multi-line labels on mobile
+  const maxLabelLines = isMobile 
+    ? Math.max(...barData.map(d => splitLabel(d.category).length))
+    : 1;
+  const extraHeight = isMobile && maxLabelLines > 1 
+    ? (maxLabelLines - 1) * 8 // Extra space for multi-line labels
+    : 0;
+  const totalHeight = baseTotalHeight + extraHeight;
 
   return (
     <section
@@ -119,14 +155,15 @@ export default function InsightsSplit() {
                 Top Deficiencies Cited by Employers
               </h3>
 
-              <div className="w-full max-w-full overflow-hidden">
+              <div className="w-full max-w-full overflow-x-auto overflow-y-visible" style={{ paddingLeft: isMobile ? '0' : '0' }}>
                 <svg
                   ref={chartRef}
                   width="100%"
                   height={totalHeight}
-                  viewBox={`0 0 ${containerWidth} ${totalHeight}`}
+                  viewBox={`${isMobile ? -20 : 0} 0 ${containerWidth + (isMobile ? 20 : 0)} ${totalHeight}`}
                   preserveAspectRatio="xMidYMid meet"
                   className="block w-full"
+                  style={{ minWidth: isMobile ? `${containerWidth + 20}px` : 'auto' }}
                 >
                   {/* Background grid lines */}
                   <defs>
@@ -180,6 +217,9 @@ export default function InsightsSplit() {
                     const y = topMargin + i * (barHeight + barSpacing);
                     const barWidth = xScale(animatedValues[i]);
                     const labelY = y + barHeight / 2;
+                    const labelLines = splitLabel(d.category);
+                    const lineHeight = isMobile ? 12 : 14;
+                    const labelStartY = labelY - ((labelLines.length - 1) * lineHeight) / 2;
 
                     return (
                       <g key={i}>
@@ -193,18 +233,21 @@ export default function InsightsSplit() {
                           style={{ transition: "width 0.05s linear" }}
                         />
 
-                        {/* Category label - positioned to the left of bars */}
-                        <text
-                          x={leftMargin - 12}
-                          y={labelY}
-                          fontSize={labelFontSize}
-                          fill="#E5E7EB"
-                          dominantBaseline="middle"
-                          fontWeight="400"
-                          textAnchor="end"
-                        >
-                          {d.category}
-                        </text>
+                        {/* Category label - positioned to the left of bars with multi-line support */}
+                        {labelLines.map((line, lineIndex) => (
+                          <text
+                            key={lineIndex}
+                            x={leftMargin - 12}
+                            y={labelStartY + lineIndex * lineHeight}
+                            fontSize={labelFontSize}
+                            fill="#E5E7EB"
+                            dominantBaseline="middle"
+                            fontWeight="400"
+                            textAnchor="end"
+                          >
+                            {line}
+                          </text>
+                        ))}
 
                         {/* Percentage label - at the end of bar */}
                         {animatedValues[i] > 0 && (

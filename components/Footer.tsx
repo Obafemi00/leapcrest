@@ -65,7 +65,7 @@ export default function Footer() {
         <div className="border-t border-border pt-8 text-center">
           <p className="text-sm text-text-secondary">
             © {new Date().getFullYear()} Leapcrest Workforce Solutions. All
-            rights reserved. CAP<sup>©</sup> is a registered trademark.
+            rights reserved.
           </p>
         </div>
       </div>

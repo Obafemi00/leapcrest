@@ -21,7 +21,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="min-h-screen max-h-screen flex flex-col bg-[#061423] relative overflow-hidden mb-24 md:mb-32"
+      className="min-h-screen max-h-screen flex flex-col bg-[#061423] relative overflow-hidden"
     >
       {/* Client-only network background to prevent hydration mismatches */}
       <HeroNetworkBackground />
@@ -56,7 +56,7 @@ export default function Hero() {
               transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
               className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight tracking-tight text-white"
               >
-              Elevating skills, accelerating careers
+              Elevating skills, Accelerating careers
               </motion.h1>
 
             {/* Bottom line: "Industry ready talent, real outcomes" */}
@@ -66,7 +66,7 @@ export default function Hero() {
               transition={{ duration: 0.5, ease: "easeOut", delay: 0.35 }}
               className="text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed text-white/90"
             >
-              Industry ready talent, real outcomes
+              Developing the workforce of tomorrow.
             </motion.h2>
 
             {/* Paragraph */}
